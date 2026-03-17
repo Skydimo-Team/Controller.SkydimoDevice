@@ -22,6 +22,9 @@ local MAX_RGB_BYTES = 60    -- max RGB bytes per HID report
 local BATCH_LEDS    = 20    -- LEDs per batch
 local CRC8_POLY     = 0x07
 
+-- Vendor command IDs
+local CMD_OFFLINE_CFG = 0x16
+
 -- ============================================================================
 -- CRC8 (MAXIM polynomial 0x07)
 -- ============================================================================
@@ -87,6 +90,42 @@ function protocol.build_end_packet(total_leds)
   local payload = header .. string.rep("\0", MAX_RGB_BYTES - #header)
   local crc = protocol.crc8(payload)
   return payload .. string.char(crc)
+end
+
+-- ============================================================================
+-- Vendor command packets
+-- ============================================================================
+
+--- Build a vendor command packet.
+--- Command frame CRC covers bytes[1..62] only (excludes ReportID byte[0]).
+--- @param cmd number Command byte.
+--- @param payload string|nil Additional payload bytes after the command byte.
+--- @return string packet 64-byte HID report.
+function protocol.build_command_packet(cmd, payload)
+  payload = payload or ""
+  local body = string.char(cmd) .. payload
+  if #body < 62 then
+    body = body .. string.rep("\0", 62 - #body)
+  elseif #body > 62 then
+    body = body:sub(1, 62)
+  end
+  local crc = protocol.crc8(body)
+  return string.char(CMD_BYTE) .. body .. string.char(crc)
+end
+
+--- Configure the device's idle (offline) LED behavior.
+--- @param effect_id number 0=OFF, 1=static, 2=breath, etc.
+--- @param brightness number 0..255.
+--- @param enable boolean true to activate offline animation.
+function protocol.send_offline_cfg(effect_id, brightness, enable)
+  local pkt = protocol.build_command_packet(CMD_OFFLINE_CFG, string.char(
+    effect_id & 0xFF,
+    brightness & 0xFF,
+    enable and 1 or 0
+  ))
+  device:write(pkt)
+  -- consume the response to keep the HID input buffer clean
+  device:read(64, 200)
 end
 
 -- ============================================================================

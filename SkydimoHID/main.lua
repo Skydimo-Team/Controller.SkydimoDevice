@@ -142,6 +142,10 @@ function plugin.on_init()
     device:log("Skydimo HID: initialized unknown model '" .. model_name .. "' as resizable strip")
   end
 
+  -- Configure device: turn off LEDs when the host stops sending data.
+  -- Firmware will auto-black-out ~3 s after the last packet.
+  protocol.send_offline_cfg(0, 0, true)
+
   state.initialized = true
 end
 
