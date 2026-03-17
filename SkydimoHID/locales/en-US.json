@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "name": "Skydimo HID Controller",
+    "description": "Skydimo HID LED strip driver implemented as a Lua plugin."
+  }
+}

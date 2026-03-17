@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "name": "Skydimo 串口控制器",
+    "description": "以 Lua 插件实现的 Skydimo 串口 LED 灯带驱动。"
+  }
+}
