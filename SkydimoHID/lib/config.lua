@@ -74,6 +74,7 @@ local MODELS = {
   ["SK0N03"] = { layout = "Strip1",      zones = { 253 },            total = 253  },
 
   -- Matrix models
+  ["SK0902"] = { layout = "MatrixSnake7", zones = { 49 },            total = 49   },
   ["SK0N07"] = { layout = "MatrixSnake7", zones = { 49 },            total = 49   },
 }
 

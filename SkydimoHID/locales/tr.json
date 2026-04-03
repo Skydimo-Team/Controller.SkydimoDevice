@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "name": "Skydimo HID Denetleyicisi",
+    "description": "Lua eklentisi olarak uygulanmış Skydimo HID LED şerit sürücüsü."
+  }
+}

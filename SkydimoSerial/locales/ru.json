@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "name": "Skydimo Serial Controller",
+    "description": "Последовательный драйвер светодиодной ленты Skydimo, реализованный как плагин Lua."
+  }
+}

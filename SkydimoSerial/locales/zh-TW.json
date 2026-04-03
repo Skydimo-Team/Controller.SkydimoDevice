@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "name": "Skydimo 串列控制器",
+    "description": "以 Lua 外掛實作的 Skydimo 串列 LED 燈帶驅動程式。"
+  }
+}
