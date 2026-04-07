@@ -4,7 +4,7 @@
   "name": "meta.name",
   "publisher": "Skydimo",
   "description": "meta.description",
-  "repository": "https://github.com/skydimo/skydimo-plugins",
+  "repository": "https://github.com/Skydimo-Team/Controller.SkydimoDevice.git",
   "license": "MIT",
   "type": "controller",
   "language": "lua",
