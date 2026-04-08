@@ -34,7 +34,7 @@ function plugin.on_init()
   local output_type = "linear"
   local led_count = 1
   local min_total_leds = 1
-  local max_total_leds = 300
+  local max_total_leds = 200
   local allowed_total_leds = nil
   local matrix = nil
 
