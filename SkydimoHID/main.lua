@@ -135,7 +135,7 @@ function plugin.on_init()
       capabilities = {
         editable = true,
         min_total_leds = 1,
-        max_total_leds = 2000,
+        max_total_leds = 150,
       },
     })
 
