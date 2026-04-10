@@ -11,7 +11,17 @@ local IMAGE_SET = {
   ["SKA1"] = true,
 }
 
--- Auto-generated from src-tauri/src/resource/controller/skydimo_serial/config.rs
+-- Default configuration for devices without a MODELS entry.
+local DEFAULTS = {
+  editable = true,
+  min_total_leds = 1,
+  max_total_leds = 150,
+}
+
+-- Unified device configuration table.
+-- Entries with `layout` define fixed hardware layouts (not user-editable).
+-- Entries without `layout` override default editable limits (e.g. max_total_leds).
+-- Layout entries auto-generated from src-tauri/src/resource/controller/skydimo_serial/config.rs
 local MODELS = {
   ["SK0121"] = { layout = "Perimeter3", zones = { 13, 25, 13 }, total = 51 },
   ["SK0124"] = { layout = "Perimeter3", zones = { 14, 26, 14 }, total = 54 },
@@ -49,6 +59,9 @@ local MODELS = {
   ["SKA127"] = { layout = "Perimeter3", zones = { 20, 41, 20 }, total = 81 },
   ["SKA132"] = { layout = "Perimeter3", zones = { 25, 45, 25 }, total = 95 },
   ["SKA134"] = { layout = "Perimeter3", zones = { 21, 51, 21 }, total = 93 },
+
+  -- Editable devices with custom limits
+  ["SK0410"] = { max_total_leds = 300 },
 }
 
 local function trim(s)
@@ -204,21 +217,52 @@ local function build_matrix_for_config(cfg)
   }
 end
 
-function M.build_layout_from_device_name(device_name)
+local function lookup_model(device_name)
   local model_id = extract_model_from_device_name(device_name)
   if model_id then
-    local cfg = MODELS[trim(model_id):upper()]
-    if cfg then
-      return build_matrix_for_config(cfg)
+    local key = trim(model_id):upper()
+    if MODELS[key] then
+      return MODELS[key]
+    end
+  end
+  local key = trim(device_name):upper()
+  return MODELS[key]
+end
+
+function M.resolve_device_config(device_name)
+  local entry = lookup_model(device_name)
+
+  -- Fixed layout device
+  if entry and entry.layout then
+    local layout = build_matrix_for_config(entry)
+    if layout then
+      return {
+        output_type = layout.segment_type,
+        led_count = layout.total_leds,
+        matrix = layout.matrix,
+        editable = false,
+        min_total_leds = layout.total_leds,
+        max_total_leds = layout.total_leds,
+        allowed_total_leds = { layout.total_leds },
+      }
     end
   end
 
-  local cfg = MODELS[trim(device_name):upper()]
-  if cfg then
-    return build_matrix_for_config(cfg)
+  -- Editable device (per-model overrides merged onto defaults)
+  local editable = DEFAULTS.editable
+  if entry and entry.editable ~= nil then
+    editable = entry.editable
   end
 
-  return nil
+  return {
+    output_type = "linear",
+    led_count = 1,
+    matrix = nil,
+    editable = editable,
+    min_total_leds = (entry and entry.min_total_leds) or DEFAULTS.min_total_leds,
+    max_total_leds = (entry and entry.max_total_leds) or DEFAULTS.max_total_leds,
+    allowed_total_leds = entry and entry.allowed_total_leds or nil,
+  }
 end
 
 return M

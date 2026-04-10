@@ -29,39 +29,19 @@ function plugin.on_init()
     device:set_image_url(image_url)
   end
 
-  local layout = config.build_layout_from_device_name(model)
-
-  local output_type = "linear"
-  local led_count = 1
-  local min_total_leds = 1
-  local max_total_leds = 150
-  local allowed_total_leds = nil
-  local matrix = nil
-
-  if layout then
-    output_type = layout.segment_type or output_type
-    led_count = layout.total_leds or led_count
-    matrix = layout.matrix
-
-    -- Built-in model layouts describe fixed hardware and should not be user-editable.
-    min_total_leds = led_count
-    max_total_leds = led_count
-    allowed_total_leds = { led_count }
-  end
-
-  local editable = layout == nil
+  local cfg = config.resolve_device_config(model)
 
   device:add_output({
     id = "out1",
     name = "Output 1",
-    type = output_type,
-    size = led_count,
-    matrix = matrix,
+    type = cfg.output_type,
+    size = cfg.led_count,
+    matrix = cfg.matrix,
     capabilities = {
-      editable = editable,
-      min_total_leds = min_total_leds,
-      max_total_leds = max_total_leds,
-      allowed_total_leds = allowed_total_leds,
+      editable = cfg.editable,
+      min_total_leds = cfg.min_total_leds,
+      max_total_leds = cfg.max_total_leds,
+      allowed_total_leds = cfg.allowed_total_leds,
     },
   })
 end
