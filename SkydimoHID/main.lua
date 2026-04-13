@@ -102,51 +102,34 @@ function plugin.on_init()
     device:set_image_url(image_url)
   end
 
-  -- Build layout from model name
-  local layout = config.build_layout_from_device_name(model_name)
+  -- Resolve unified device configuration (layout, capabilities, default effect)
+  local cfg = config.resolve_device_config(model_name)
 
-  if layout then
-    -- Known model with fixed layout
-    device:add_output({
-      id   = "out1",
-      name = "Output 1",
-      type = layout.segment_type,
-      size = layout.total_leds,
-      matrix = layout.matrix,
-      capabilities = {
-        editable = false,
-        min_total_leds = layout.total_leds,
-        max_total_leds = layout.total_leds,
-        allowed_total_leds = { layout.total_leds },
-      },
-    })
-
-    device:log(string.format(
-      "Skydimo HID: initialized '%s' — %d LEDs, type=%s",
-      model_name, layout.total_leds, layout.segment_type
-    ))
-  else
-    -- Unknown Skydimo model: resizable linear strip
-    device:add_output({
-      id   = "out1",
-      name = "LED Strip",
-      type = "linear",
-      size = 60,
-      capabilities = {
-        editable = true,
-        min_total_leds = 1,
-        max_total_leds = 150,
-      },
-    })
-
-    device:log("Skydimo HID: initialized unknown model '" .. model_name .. "' as resizable strip")
-  end
+  device:add_output({
+    id   = "out1",
+    name = "Output 1",
+    type = cfg.output_type,
+    size = cfg.led_count,
+    matrix = cfg.matrix,
+    default_effect = cfg.default_effect,
+    capabilities = {
+      editable = cfg.editable,
+      min_total_leds = cfg.min_total_leds,
+      max_total_leds = cfg.max_total_leds,
+      allowed_total_leds = cfg.allowed_total_leds,
+    },
+  })
 
   -- Configure device: turn off LEDs when the host stops sending data.
   -- Firmware will auto-black-out ~3 s after the last packet.
   protocol.send_offline_cfg(0, 0, true)
 
   state.initialized = true
+
+  device:log(string.format(
+    "Skydimo HID: initialized '%s' — %d LEDs, type=%s",
+    model_name, cfg.led_count, cfg.output_type
+  ))
 end
 
 function plugin.on_tick(_dt)

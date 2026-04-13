@@ -37,6 +37,7 @@ function plugin.on_init()
     type = cfg.output_type,
     size = cfg.led_count,
     matrix = cfg.matrix,
+    default_effect = cfg.default_effect,
     capabilities = {
       editable = cfg.editable,
       min_total_leds = cfg.min_total_leds,

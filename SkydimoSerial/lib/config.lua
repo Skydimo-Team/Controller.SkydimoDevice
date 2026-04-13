@@ -16,6 +16,7 @@ local DEFAULTS = {
   editable = true,
   min_total_leds = 1,
   max_total_leds = 150,
+  default_effect = "Rainbow",
 }
 
 -- Unified device configuration table.
@@ -249,6 +250,7 @@ function M.resolve_device_config(device_name)
         min_total_leds = layout.total_leds,
         max_total_leds = layout.total_leds,
         allowed_total_leds = { layout.total_leds },
+        default_effect = (entry and entry.default_effect) or DEFAULTS.default_effect,
       }
     end
   end
@@ -267,6 +269,7 @@ function M.resolve_device_config(device_name)
     min_total_leds = (entry and entry.min_total_leds) or DEFAULTS.min_total_leds,
     max_total_leds = (entry and entry.max_total_leds) or DEFAULTS.max_total_leds,
     allowed_total_leds = entry and entry.allowed_total_leds or nil,
+    default_effect = (entry and entry.default_effect) or DEFAULTS.default_effect,
   }
 end
 

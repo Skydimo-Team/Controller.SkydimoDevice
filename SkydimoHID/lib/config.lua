@@ -25,6 +25,15 @@ local IMAGE_SET = {
   ["SKA1"] = true, ["SKB1"] = true,
 }
 
+-- Default configuration for devices without a MODELS entry.
+local DEFAULTS = {
+  editable = true,
+  default_led_count = 60,
+  min_total_leds = 1,
+  max_total_leds = 150,
+  default_effect = "Rainbow",
+}
+
 -- Model database, matching SkydimoDeviceConfig.h
 local MODELS = {
   -- 2-zone models (Sides2)
@@ -83,6 +92,9 @@ local MODELS = {
   -- Matrix models
   ["SK0902"] = { layout = "MatrixSnake7", zones = { 49 },            total = 49   },
   ["SK0N07"] = { layout = "MatrixSnake7", zones = { 49 },            total = 49   },
+
+  -- Editable devices with custom limits
+  ["SK0410"] = { max_total_leds = 300 },
 }
 
 -- ============================================================================
@@ -105,6 +117,18 @@ local function extract_model_from_device_name(device_name)
     return nil
   end
   return device_name:sub(start)
+end
+
+local function lookup_model(device_name)
+  local model_id = extract_model_from_device_name(device_name)
+  if model_id then
+    local key = trim(model_id):upper()
+    if MODELS[key] then
+      return MODELS[key]
+    end
+  end
+  local key = trim(device_name):upper()
+  return MODELS[key]
 end
 
 -- ============================================================================
@@ -296,22 +320,53 @@ end
 --- @param device_name string Full device name (e.g. "Skydimo SK0127").
 --- @return table|nil layout { total_leds, segment_type, matrix? } or nil for unknown.
 function M.build_layout_from_device_name(device_name)
-  -- Try to extract model from "Skydimo <model>" format
-  local model_id = extract_model_from_device_name(device_name)
-  if model_id then
-    local cfg = MODELS[trim(model_id):upper()]
-    if cfg then
-      return build_matrix_for_config(cfg)
+  local entry = lookup_model(device_name)
+  if entry and entry.layout then
+    return build_matrix_for_config(entry)
+  end
+  return nil
+end
+
+--- Resolve full device configuration from a device name.
+--- Returns a unified config table (same structure as SkydimoSerial).
+--- @param device_name string Full device name (e.g. "Skydimo SK0127").
+--- @return table config { output_type, led_count, matrix, editable, min/max_total_leds, allowed_total_leds, default_effect }
+function M.resolve_device_config(device_name)
+  local entry = lookup_model(device_name)
+
+  -- Fixed layout device
+  if entry and entry.layout then
+    local layout = build_matrix_for_config(entry)
+    if layout then
+      return {
+        output_type = layout.segment_type,
+        led_count = layout.total_leds,
+        matrix = layout.matrix,
+        editable = false,
+        min_total_leds = layout.total_leds,
+        max_total_leds = layout.total_leds,
+        allowed_total_leds = { layout.total_leds },
+        default_effect = (entry and entry.default_effect) or DEFAULTS.default_effect,
+      }
     end
   end
 
-  -- Fallback: try treating device_name itself as model ID
-  local cfg = MODELS[trim(device_name):upper()]
-  if cfg then
-    return build_matrix_for_config(cfg)
+  -- Editable device (per-model overrides merged onto defaults)
+  local editable = DEFAULTS.editable
+  if entry and entry.editable ~= nil then
+    editable = entry.editable
   end
 
-  return nil
+  return {
+    output_type = "linear",
+    led_count = DEFAULTS.default_led_count,
+    matrix = nil,
+    editable = editable,
+    min_total_leds = (entry and entry.min_total_leds) or DEFAULTS.min_total_leds,
+    max_total_leds = (entry and entry.max_total_leds) or DEFAULTS.max_total_leds,
+    allowed_total_leds = entry and entry.allowed_total_leds or nil,
+    default_effect = (entry and entry.default_effect) or DEFAULTS.default_effect,
+  }
 end
 
 return M
