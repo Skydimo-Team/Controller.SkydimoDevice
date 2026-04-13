@@ -8,7 +8,7 @@ local IMAGE_SET = {
   ["SK09"] = true, ["SK0E"] = true, ["SK0F"] = true, ["SK0H"] = true,
   ["SK0I"] = true, ["SK0J"] = true, ["SK0J01"] = true, ["SK0J02"] = true,
   ["SK0L"] = true, ["SK0M"] = true, ["SK0N03"] = true, ["SKA0"] = true,
-  ["SKA1"] = true,
+  ["SKA1"] = true, ["SKB1"] = true,
 }
 
 -- Default configuration for devices without a MODELS entry.
@@ -36,6 +36,7 @@ local MODELS = {
   ["SK0403"] = { layout = "Strip1", zones = { 96 }, total = 96 },
   ["SK0404"] = { layout = "Strip1", zones = { 144 }, total = 144 },
   ["SK0801"] = { layout = "Strip1", zones = { 2 }, total = 2 },
+  ["SK0802"] = { layout = "Strip1", zones = { 18 }, total = 18 },
   ["SK0803"] = { layout = "Strip1", zones = { 10 }, total = 10 },
   ["SK0901"] = { layout = "Strip1", zones = { 14 }, total = 14 },
   ["SK0E01"] = { layout = "Strip1", zones = { 16 }, total = 16 },
@@ -50,6 +51,10 @@ local MODELS = {
   ["SK0L27"] = { layout = "Perimeter4", zones = { 17, 31, 17, 31 }, total = 96 },
   ["SK0L32"] = { layout = "Perimeter4", zones = { 20, 37, 20, 37 }, total = 114 },
   ["SK0L34"] = { layout = "Perimeter4", zones = { 15, 41, 15, 41 }, total = 112 },
+  ["SKB124"] = { layout = "Perimeter4", zones = { 18, 34, 18, 34 }, total = 104 },
+  ["SKB127"] = { layout = "Perimeter4", zones = { 20, 41, 20, 41 }, total = 122 },
+  ["SKB132"] = { layout = "Perimeter4", zones = { 25, 44, 25, 44 }, total = 138 },
+  ["SKB134"] = { layout = "Perimeter4", zones = { 21, 50, 21, 50 }, total = 142 },
   ["SK0M01"] = { layout = "Strip1", zones = { 24 }, total = 24 },
   ["SK0N01"] = { layout = "Strip1", zones = { 256 }, total = 256 },
   ["SK0N02"] = { layout = "Strip1", zones = { 1024 }, total = 1024 },

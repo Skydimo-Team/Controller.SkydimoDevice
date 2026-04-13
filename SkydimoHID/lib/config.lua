@@ -22,7 +22,7 @@ local IMAGE_SET = {
   ["SK09"] = true, ["SK0E"] = true, ["SK0F"] = true, ["SK0H"] = true,
   ["SK0I"] = true, ["SK0J"] = true, ["SK0J01"] = true, ["SK0J02"] = true,
   ["SK0L"] = true, ["SK0M"] = true, ["SK0N03"] = true, ["SKA0"] = true,
-  ["SKA1"] = true,
+  ["SKA1"] = true, ["SKB1"] = true,
 }
 
 -- Model database, matching SkydimoDeviceConfig.h
@@ -49,6 +49,12 @@ local MODELS = {
   ["SK0L32"] = { layout = "Perimeter4",  zones = { 20, 37, 20, 37 }, total = 114 },
   ["SK0L34"] = { layout = "Perimeter4",  zones = { 15, 41, 15, 41 }, total = 112 },
 
+  -- SKB series (Perimeter4)
+  ["SKB124"] = { layout = "Perimeter4",  zones = { 18, 34, 18, 34 }, total = 104 },
+  ["SKB127"] = { layout = "Perimeter4",  zones = { 20, 41, 20, 41 }, total = 122 },
+  ["SKB132"] = { layout = "Perimeter4",  zones = { 25, 44, 25, 44 }, total = 138 },
+  ["SKB134"] = { layout = "Perimeter4",  zones = { 21, 50, 21, 50 }, total = 142 },
+
   -- SKA series (Perimeter3)
   ["SKA124"] = { layout = "Perimeter3",  zones = { 18, 34, 18 },     total = 70  },
   ["SKA127"] = { layout = "Perimeter3",  zones = { 20, 41, 20 },     total = 81  },
@@ -61,6 +67,7 @@ local MODELS = {
   ["SK0404"] = { layout = "Strip1",      zones = { 144 },            total = 144  },
   ["SK0901"] = { layout = "Strip1",      zones = { 14 },             total = 14   },
   ["SK0801"] = { layout = "Strip1",      zones = { 2 },              total = 2    },
+  ["SK0802"] = { layout = "Strip1",      zones = { 18 },             total = 18   },
   ["SK0803"] = { layout = "Strip1",      zones = { 10 },             total = 10   },
   ["SK0E01"] = { layout = "Strip1",      zones = { 16 },             total = 16   },
   ["SK0H01"] = { layout = "Strip1",      zones = { 2 },              total = 2    },
