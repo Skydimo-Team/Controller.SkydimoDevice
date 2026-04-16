@@ -1,6 +1,6 @@
 {
   "meta": {
     "name": "Skydimo HID 控制器",
-    "description": "以 Lua 外掛實作的 Skydimo HID LED 燈帶驅動程式。"
+    "description": "Skydimo 官方 HID 燈光驅動程式。"
   }
 }

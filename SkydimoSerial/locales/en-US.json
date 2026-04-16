@@ -1,6 +1,6 @@
 {
   "meta": {
     "name": "Skydimo Serial Controller",
-    "description": "Skydimo serial LED strip driver implemented as a Lua plugin."
+    "description": "Official Skydimo serial lighting driver."
   }
 }
