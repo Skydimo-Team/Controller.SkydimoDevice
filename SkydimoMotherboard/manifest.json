@@ -1,0 +1,25 @@
+{
+  "id": "skydimo_g857d_cdc_os21",
+  "version": "1.0.0",
+  "name": "meta.name",
+  "publisher": "Skydimo",
+  "description": "meta.description",
+  "repository": "https://github.com/skydimo/skydimo-plugins",
+  "license": "MIT",
+  "type": "controller",
+  "language": "lua",
+  "entry": "main.lua",
+  "match": {
+    "protocol": "serial",
+    "baud_rate": 115200,
+    "timeout_ms": 200,
+    "rules": [
+      { "vid": "0x1A86", "pid": "0xE318" }
+    ]
+  },
+  "permissions": [
+    "serial:read",
+    "serial:write",
+    "log"
+  ]
+}

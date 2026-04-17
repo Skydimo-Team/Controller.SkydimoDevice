@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "name": "Skydimo G857D CDC 控制器",
+    "description": "适用于 Skydimo G857D CDC os2.1 八通道灯光控制器的串口插件。"
+  }
+}

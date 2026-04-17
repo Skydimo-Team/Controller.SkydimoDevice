@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "name": "Skydimo G857D CDC Controller",
+    "description": "Serial controller plugin for the Skydimo G857D CDC os2.1 8-channel lighting controller."
+  }
+}
