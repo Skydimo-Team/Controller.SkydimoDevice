@@ -31,7 +31,7 @@ function plugin.on_validate()
   device:set_manufacturer("Skydimo")
   device:set_model("G857D CDC os2.1")
   device:set_description("Skydimo G857D CDC os2.1 serial lighting controller")
-  device:set_serial_id(device:controller_port())
+  device:set_serial_id("")
   device:log("Serial interface matching is currently limited to VID/PID; interface-number validation is unavailable for serial candidates.")
   return true
 end
