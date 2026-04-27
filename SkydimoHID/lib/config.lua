@@ -14,15 +14,19 @@
 
 local M = {}
 
-local IMAGE_BASE_URL = "https://dev-dl.skydimo.com/assets/device/"
+local IMAGE_BASE_URL = "https://esa-dl.skydimo.com/assets/device/"
 
 local IMAGE_SET = {
   ["SK01"] = true, ["SK02"] = true, ["SK03"] = true, ["SK04"] = true,
   ["SK0410"] = true, ["SK06"] = true, ["SK08"] = true, ["SK0802"] = true,
-  ["SK09"] = true, ["SK0E"] = true, ["SK0F"] = true, ["SK0H"] = true,
+  ["SK09"] = true, ["SK0902"] = true, ["SK0E"] = true, ["SK0F"] = true, ["SK0H"] = true,
   ["SK0I"] = true, ["SK0J"] = true, ["SK0J01"] = true, ["SK0J02"] = true,
   ["SK0L"] = true, ["SK0M"] = true, ["SK0N03"] = true, ["SKA0"] = true,
-  ["SKA1"] = true, ["SKB1"] = true,
+  ["SKA1"] = true, ["SKB"] = true,
+}
+
+local IMAGE_EXTENSIONS = {
+  ["SK0902"] = "png",
 }
 
 -- Default configuration for devices without a MODELS entry.
@@ -149,7 +153,8 @@ function M.resolve_image_url(device_name)
   for len = #model_id, 1, -1 do
     local prefix = model_id:sub(1, len)
     if IMAGE_SET[prefix] then
-      return IMAGE_BASE_URL .. prefix .. ".jpg"
+      local extension = IMAGE_EXTENSIONS[prefix] or "jpg"
+      return IMAGE_BASE_URL .. prefix .. "." .. extension
     end
   end
 
