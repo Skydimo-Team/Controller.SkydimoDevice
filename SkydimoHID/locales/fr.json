@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "name": "Contrôleur HID Skydimo",
+    "description": "Pilote d'éclairage HID officiel de Skydimo."
+  }
+}
